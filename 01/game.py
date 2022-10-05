@@ -3,6 +3,7 @@ This module is my tic tac game. The players type in console number of line and c
 on the board is empty, the symbol is put there. If the field is occupied, then you need to select
 another one. Game will end after filling all fields.
 """
+import string
 
 
 class TicTacGame:
@@ -32,10 +33,11 @@ class TicTacGame:
         :param symbol: 'O' or 'X'
         :return: True if input data is correct and some message if data is incorrect
         """
-        if symbol not in ['X', 'O']:
-            return 'Incorrect symbol'
         input_symbols = input_data.split()
-        if input_symbols[0].isnumeric() and input_symbols[1].isnumeric():
+        if len(input_symbols) != 2:
+            return 'Incorrect input format: you need to enter exactly 2 numbers: ' \
+                   'row number and column number.\nTry again!'
+        if input_symbols[0] in string.digits and input_symbols[1] in string.digits:
             if 1 <= int(input_symbols[0]) <= 3 and 1 <= int(input_symbols[1]) <= 3:
                 if self.board[int(input_symbols[0]) - 1][int(input_symbols[1]) - 1] == ' ':
                     self.board[int(input_symbols[0]) - 1][int(input_symbols[1]) - 1] = symbol

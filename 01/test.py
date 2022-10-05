@@ -33,6 +33,8 @@ class TestMyGame:
     input_range_error = 'Incorrect input format: the numbers must be integers from 1 to 3. ' \
                         '\nTry again!'
     input_occupation_error = 'This field is already occupied by another player. \nTry again!'
+    input_number_of_int_error = 'Incorrect input format: you need to enter exactly 2 numbers: ' \
+                                'row number and column number.\nTry again!'
 
     @pytest.mark.parametrize('input_data, expected', [(['1 1', '2 1', '2 2', '3 1', '3 3'], 'X'),
                                                       (['1 2', '1 1', '2 3', '2 2', '3 1',
@@ -100,7 +102,15 @@ class TestMyGame:
                                                       (['3 3', 'O'], True),
                                                       (['1 6', 'X'], input_range_error),
                                                       (['6 6', 'X'], input_range_error),
-                                                      (['6 1', 'X'], input_range_error)])
+                                                      (['6 1', 'X'], input_range_error),
+                                                      (['6', 'X'], input_number_of_int_error),
+                                                      (['6', 'O'], input_number_of_int_error),
+                                                      (['1 \u00b9', 'X'], input_type_error),
+                                                      (['\u00b9 \u00b9', 'X'], input_type_error),
+                                                      (['\u00b9 1', 'X'], input_type_error),
+                                                      (['\u00b9 1', 'X'], input_type_error),
+                                                      (['\u00b9 \u00b9', 'X'], input_type_error),
+                                                      (['1 \u00b9', 'X'], input_type_error)])
     def test_validation_range_and_format(self, my_game, input_data, expected):
         """
         Checks validation method in case of incorrect input
@@ -116,7 +126,7 @@ class TestMyGame:
                               ('O', 'X', input_occupation_error)])
     def test_validation_occupation(self, my_game, first_symbol, second_symbol, expected):
         """
-        Tests validation methond in case, when player picks already filled field
+        Tests validation method in case, when player picks already filled field
         :param my_game: tic_tac game class from fixture
         :param first_symbol: 'O' or 'X'
         :param second_symbol: 'O' or 'X'
