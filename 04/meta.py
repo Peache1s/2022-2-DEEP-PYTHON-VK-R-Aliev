@@ -8,12 +8,10 @@ def customize_word(word):
     if not re.fullmatch('__[a-z]+__', word) and True not in check_lst:
         if word.startswith('__'):
             return '__custom_' + word[2:]
-        elif word.startswith('_'):
+        if word.startswith('_'):
             return '_custom_' + word[1:]
-        else:
-            return 'custom_' + word
-    else:
-        return word
+        return 'custom_' + word
+    return word
 
 
 class CustomMeta(type):
@@ -39,12 +37,16 @@ class CustomClass(metaclass=CustomMeta):
     _protected = 100
     __private = 150
 
-    def __init__(self, val1=99, val2 = 100, val3 = 101 ):
+    def __init__(self, val1=99, val2=100, val3=101):
         self.val = val1
         self._val = val2
         self.__val = val3
 
     def __getattrfromclass__(self, attr):
+        """
+        This method was added to get attributes from class methods.
+        I made a custom magic method so that it doesn't get renamed.
+        """
         return super().__getattribute__(customize_word(attr))
 
     def __setattr__(self, key, value):
@@ -52,7 +54,8 @@ class CustomClass(metaclass=CustomMeta):
         return super().__setattr__(new_key, value)
 
     def line(self):
-        return self.__getattrfromclass__('public') * self.__getattrfromclass__('_protected')
+        return self.__getattrfromclass__('public') * \
+               self.__getattrfromclass__('_protected')
 
     def __str__(self):
         return "Custom_by_metaclass"

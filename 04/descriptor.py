@@ -5,7 +5,7 @@ class String:
         self._name = f"_{name}"
 
     def __set__(self, obj, val):
-        if type(val) == str:
+        if isinstance(val, str):
             return setattr(obj, self._name, val)
         raise ValueError("The value must be a string")
 
@@ -20,7 +20,7 @@ class Integer:
         self._num = f"_{num}"
 
     def __set__(self, obj, val):
-        if type(val) == int:
+        if isinstance(val, int):
             return setattr(obj, self._num, val)
         raise ValueError("The value must be a int")
 
@@ -34,7 +34,7 @@ class PositiveInteger:
         self._price = f"_{price}"
 
     def __set__(self, obj, val):
-        if type(val) == int and val > 0:
+        if isinstance(val, int) and val > 0:
             return setattr(obj, self._price, val)
         raise ValueError("The value must be a positive int")
 
@@ -46,7 +46,3 @@ class Data:
     name = String()
     num = Integer()
     price = PositiveInteger()
-
-
-first = Data()
-second = Data()
