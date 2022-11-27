@@ -90,10 +90,21 @@ class TestParseFunction:
             assert len(exc_answer) == mock_method.call_count
             assert set(exc_answer) == set(answer)
 
+    def test_none_keywords(self, data_generator):
+        with mock.patch('parse_json.keyword_callback') as mock_method:
+            json_dict, fields, keywords = data_generator
+            assert mock_method.call_count == 0
+            assert parse_json(json.dumps(json_dict), mock_method, fields) == []
+
+    def test_run_without_word_handler(self, data_generator):
+        json_dict, fields, keywords = data_generator
+        with pytest.raises(TypeError):
+            parse_json(json_str=json.dumps(json_dict), keywords=keywords, required_fields=fields)
+
 
 class TestKeywordCallback:
 
-    @pytest.mark.parametrize('input_word, expected', [(Faker().word(), False),
+    @pytest.mark.parametrize('input_word, expected_flag', [(Faker().word(), False),
                                                       (Faker().random_uppercase_letter() +
                                                        Faker().word(), True),
                                                       (Faker().random_uppercase_letter()*7, False),
@@ -102,12 +113,14 @@ class TestKeywordCallback:
                                                        str(Faker().random.randint(1, 1000)), False),
                                                       (Faker().random_element(elements=('<', '>', '$', '%', '#', '*', '@', '!')), False)
                                                       ])
-    def test_keyword_callback(self, input_word, expected):
+    def test_keyword_callback(self, input_word, expected_flag):
         """
         The function tests the handler function with various string format types.
         :param input_word:The word for testing in handler function
         :param expected: True or False
-
         """
-        assert keyword_callback(input_word) == expected
-
+        expected_word = copy.copy(input_word)
+        if expected_flag:
+            expected_word = expected_word.capitalize()
+        keyword_callback(input_word)
+        assert input_word == expected_word

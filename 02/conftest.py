@@ -6,7 +6,7 @@ from faker import Faker
 
 
 @pytest.fixture()
-def data_generator(number_of_keys_and_keywords = 10):
+def data_generator(number_of_keys_and_keywords=10):
     fake = Faker()
     keys = [fake.unique.word() for _ in range(number_of_keys_and_keywords)]
     fields = keys
