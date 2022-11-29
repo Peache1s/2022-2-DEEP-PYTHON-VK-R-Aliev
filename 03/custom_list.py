@@ -63,3 +63,6 @@ class CustomList(list):
 
     def __str__(self):
         return super().__str__() + '\n' + str(sum(self))
+
+    def elem_compare(self, compared):
+        return super().__eq__(compared)

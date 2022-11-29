@@ -35,9 +35,9 @@ class TestCustomListAddSub:
         first_clist, second_clist = CustomList(first), CustomList(second)
         copy_first, copy_second = copy.copy(first_clist), copy.copy(second_clist)
         res_clist = first_clist - second_clist
-        assert copy_first == first_clist
-        assert copy_second == second_clist
-        assert res_clist == expected
+        assert copy_first.elem_compare(first_clist)
+        assert copy_second.elem_compare(second_clist)
+        assert res_clist.elem_compare(expected)
         assert type(res_clist).__name__ == 'CustomList'
 
     @pytest.mark.parametrize('first, second, expected', [([1, 2, 3], [2, 3, 4], [3, 5, 7]),
@@ -49,9 +49,9 @@ class TestCustomListAddSub:
         copy_first, copy_second = copy.copy(first_clist), copy.copy(second)
         res_clist = first_clist + second
         assert second == copy_second
-        assert copy_first == first_clist
+        assert copy_first.elem_compare(first_clist)
         assert type(res_clist).__name__ == 'CustomList'
-        assert res_clist == expected
+        assert res_clist.elem_compare(expected)
 
     @pytest.mark.parametrize('first, second, expected', [([1, 2, 3], [2, 3, 4], [-1, -1, -1]),
                                                          ([1, 2], [2, 3, 4], [-1, -1, 4]),
@@ -62,9 +62,9 @@ class TestCustomListAddSub:
         copy_first, copy_second = copy.copy(first_clist), copy.copy(second)
         res_clist = first_clist - second
         assert second == copy_second
-        assert copy_first == first_clist
+        assert copy_first.elem_compare(first_clist)
         assert type(res_clist).__name__ == 'CustomList'
-        assert res_clist == expected
+        assert res_clist.elem_compare(expected)
 
     @pytest.mark.parametrize('first, second, expected', [([1, 2, 3], [2, 3, 4], [3, 5, 7]),
                                                          ([1, 2], [2, 3, 4], [3, 5, 4]),
@@ -74,9 +74,9 @@ class TestCustomListAddSub:
         first_clist, second_clist = CustomList(first), CustomList(second)
         copy_second = copy.copy(second_clist)
         first_clist += second_clist
-        assert copy_second == second_clist
+        assert copy_second.elem_compare(second_clist)
         assert type(first_clist).__name__ == 'CustomList'
-        assert first_clist == expected
+        assert first_clist.elem_compare(expected)
 
     @pytest.mark.parametrize('first, second, expected', [([1, 2, 3], [2, 3, 4], [-1, -1, -1]),
                                                          ([1, 2], [2, 3, 4], [-1, -1, 4]),
@@ -86,9 +86,9 @@ class TestCustomListAddSub:
         first_clist, second_clist = CustomList(first), CustomList(second)
         copy_second = copy.copy(second_clist)
         first_clist -= second_clist
-        assert copy_second == second_clist
+        assert copy_second.elem_compare(second_clist)
         assert type(first_clist).__name__ == 'CustomList'
-        assert first_clist == expected
+        assert first_clist.elem_compare(expected)
 
     @pytest.mark.parametrize('first, second, expected', [([1, 2, 3], [2, 3, 4], [3, 5, 7]),
                                                          ([1, 2], [2, 3, 4], [3, 5, 4]),
@@ -100,7 +100,7 @@ class TestCustomListAddSub:
         first_clist += second
         assert copy_second == second
         assert type(first_clist).__name__ == 'CustomList'
-        assert first_clist == expected
+        assert first_clist.elem_compare(expected)
 
     @pytest.mark.parametrize('first, second, expected', [([1, 2, 3], [2, 3, 4], [-1, -1, -1]),
                                                          ([1, 2], [2, 3, 4], [-1, -1, 4]),
@@ -112,7 +112,7 @@ class TestCustomListAddSub:
         first_clist -= second
         assert copy_second == second
         assert type(first_clist).__name__ == 'CustomList'
-        assert first_clist == expected
+        assert first_clist.elem_compare(expected)
 
     @pytest.mark.parametrize('first, second, expected', [([1, 2, 3], [2, 3, 4], [3, 5, 7]),
                                                          ([1, 2], [2, 3, 4], [3, 5, 4]),
@@ -125,8 +125,8 @@ class TestCustomListAddSub:
         res_clist = first + second_clist
         assert type(res_clist).__name__ == 'CustomList'
         assert first == copy_first
-        assert copy_second == second_clist
-        assert res_clist == expected
+        assert copy_second.elem_compare(second_clist)
+        assert res_clist.elem_compare(expected)
 
     @pytest.mark.parametrize('first, second, expected', [([1, 2, 3], [2, 3, 4], [-1, -1, -1]),
                                                          ([1, 2], [2, 3, 4], [-1, -1, 4]),
@@ -139,8 +139,8 @@ class TestCustomListAddSub:
         res_clist = first - second_clist
         assert type(res_clist).__name__ == 'CustomList'
         assert first == copy_first
-        assert copy_second == second_clist
-        assert res_clist == expected
+        assert copy_second.elem_compare(second_clist)
+        assert res_clist.elem_compare(expected)
 
 
 class TestCustomListAddSubWithRandomData:
@@ -184,9 +184,9 @@ class TestCustomListAddSubWithRandomData:
         first_clist, second_clist = CustomList(first), CustomList(second)
         copy_first, copy_second = copy.copy(first_clist), copy.copy(second_clist)
         res_clist = first_clist + second_clist
-        assert copy_first == first_clist
-        assert copy_second == second_clist
-        assert res_clist == self.expect_add(first, second)
+        assert copy_first.elem_compare(first_clist)
+        assert copy_second.elem_compare(second_clist)
+        assert res_clist.elem_compare(self.expect_add(first, second))
 
     @pytest.mark.parametrize('first, second', [([Faker().random.randint(1, 256) for _ in range(10)],
                                                 [Faker().random.randint(1, 256) for _ in range(10)]),
@@ -201,9 +201,9 @@ class TestCustomListAddSubWithRandomData:
         first_clist, second_clist = CustomList(first), CustomList(second)
         copy_first, copy_second = copy.copy(first_clist), copy.copy(second_clist)
         res_clist = first_clist - second_clist
-        assert copy_first == first_clist
-        assert copy_second == second_clist
-        assert res_clist == self.expect_sub(first, second)
+        assert copy_first.elem_compare(first_clist)
+        assert copy_second.elem_compare(second_clist)
+        assert res_clist.elem_compare(self.expect_sub(first, second))
 
     @pytest.mark.parametrize('first, second', [([Faker().random.randint(1, 256) for _ in range(10)],
                                                 [Faker().random.randint(1, 256) for _ in range(10)]),
@@ -219,9 +219,9 @@ class TestCustomListAddSubWithRandomData:
         copy_first, copy_second = copy.copy(first_clist), copy.copy(second)
         res_clist = first_clist + second
         assert second == copy_second
-        assert copy_first == first_clist
+        assert copy_first.elem_compare(first_clist)
         assert type(res_clist).__name__ == 'CustomList'
-        assert res_clist == self.expect_add(first, second)
+        assert res_clist.elem_compare(self.expect_add(first, second))
 
     @pytest.mark.parametrize('first, second', [([Faker().random.randint(1, 256) for _ in range(10)],
                                                 [Faker().random.randint(1, 256) for _ in range(10)]),
@@ -237,9 +237,9 @@ class TestCustomListAddSubWithRandomData:
         copy_first, copy_second = copy.copy(first_clist), copy.copy(second)
         res_clist = first_clist - second
         assert second == copy_second
-        assert copy_first == first_clist
+        assert copy_first.elem_compare(first_clist)
         assert type(res_clist).__name__ == 'CustomList'
-        assert res_clist == self.expect_sub(first, second)
+        assert res_clist.elem_compare(self.expect_sub(first, second))
 
     @pytest.mark.parametrize('first, second', [([Faker().random.randint(1, 256) for _ in range(10)],
                                                 [Faker().random.randint(1, 256) for _ in range(10)]),
@@ -254,9 +254,9 @@ class TestCustomListAddSubWithRandomData:
         first_clist, second_clist = CustomList(first), CustomList(second)
         copy_second = copy.copy(second_clist)
         first_clist += second_clist
-        assert copy_second == second_clist
+        assert copy_second.elem_compare(second_clist)
         assert type(first_clist).__name__ == 'CustomList'
-        assert first_clist == self.expect_add(first, second)
+        assert first_clist.elem_compare(self.expect_add(first, second))
 
     @pytest.mark.parametrize('first, second', [([Faker().random.randint(1, 256) for _ in range(10)],
                                                 [Faker().random.randint(1, 256) for _ in range(10)]),
@@ -271,9 +271,9 @@ class TestCustomListAddSubWithRandomData:
         first_clist, second_clist = CustomList(first), CustomList(second)
         copy_second = copy.copy(second_clist)
         first_clist -= second_clist
-        assert copy_second == second_clist
+        assert copy_second.elem_compare(second_clist)
         assert type(first_clist).__name__ == 'CustomList'
-        assert first_clist == self.expect_sub(first, second)
+        assert first_clist.elem_compare(self.expect_sub(first, second))
 
     @pytest.mark.parametrize('first, second', [([Faker().random.randint(1, 256) for _ in range(10)],
                                                 [Faker().random.randint(1, 256) for _ in range(10)]),
@@ -291,8 +291,8 @@ class TestCustomListAddSubWithRandomData:
         res_clist = first + second_clist
         assert type(res_clist).__name__ == 'CustomList'
         assert first == copy_first
-        assert copy_second == second_clist
-        assert res_clist == self.expect_add(first, second)
+        assert copy_second.elem_compare(second_clist)
+        assert res_clist.elem_compare(self.expect_add(first, second))
 
     @pytest.mark.parametrize('first, second', [([Faker().random.randint(1, 256) for _ in range(10)],
                                                 [Faker().random.randint(1, 256) for _ in range(10)]),
@@ -311,7 +311,7 @@ class TestCustomListAddSubWithRandomData:
         assert type(res_clist).__name__ == 'CustomList'
         assert first == copy_first
         assert copy_second == second_clist
-        assert res_clist == self.expect_sub(first, second)
+        assert res_clist.elem_compare(self.expect_sub(first, second))
 
     @pytest.mark.parametrize('first, second', [([Faker().random.randint(1, 256) for _ in range(10)],
                                                 [Faker().random.randint(1, 256) for _ in range(10)]),
@@ -328,7 +328,7 @@ class TestCustomListAddSubWithRandomData:
         first_clist += second
         assert copy_second == second
         assert type(first_clist).__name__ == 'CustomList'
-        assert first_clist == self.expect_add(first, second)
+        assert first_clist.elem_compare(self.expect_add(first, second))
 
     @pytest.mark.parametrize('first, second', [([Faker().random.randint(1, 256) for _ in range(10)],
                                                 [Faker().random.randint(1, 256) for _ in range(10)]),
@@ -345,7 +345,7 @@ class TestCustomListAddSubWithRandomData:
         first_clist -= second
         assert copy_second == second
         assert type(first_clist).__name__ == 'CustomList'
-        assert first_clist == self.expect_sub(first, second)
+        assert first_clist.elem_compare(self.expect_sub(first, second))
 
 
 class TestCustomListCompare:
@@ -399,9 +399,18 @@ class TestCustomListCompare:
         return (CustomList(first) >= CustomList(second)) == expect
 
 
-class TestCustomListStr:
+class TestCustomListMethods:
 
     def test_str(self):
         expected_lst = [Faker().random.randint(1, 256) for _ in range(10)]
         expected_str = str(expected_lst) + '\n' + str(sum(expected_lst))
         return str(CustomList(expected_lst)) == expected_str
+
+    @pytest.mark.parametrize('first,  second, expect', [([2, 2, 2], [1, 1, 1], False),
+                                                        ([1, 1, 1], [2, 2, 2], False),
+                                                        ([1, 1, 1], [1, 1, 1], True),
+                                                        ([1, 2, 3], [1, 2, 3], True),
+                                                        ([11, 12, 3], [11, 12], False),
+                                                        ([16], [4, 10, 2], False)])
+    def test_elem_compare(self, first, second, expect):
+        assert CustomList(first).elem_compare(second) == expect
