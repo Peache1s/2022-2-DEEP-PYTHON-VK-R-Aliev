@@ -16,19 +16,17 @@ def customize_word(word):
 
 class CustomMeta(type):
 
+    @staticmethod
+    def new_set_attr(self, name, val):
+        object.__setattr__(self, customize_word(name), val)
+
     def __new__(mcs, name, bases, class_dict, **kwargs):
         new_class_dict = {}
         for attr_name, value in class_dict.items():
             new_class_dict[customize_word(attr_name)] = value
-        return super().__new__(mcs, name, bases, new_class_dict, **kwargs)
 
-    def __call__(cls, *args, **kwargs):
-        instance = super().__call__(*args, **kwargs)
-        new_instance_dict = {}
-        for attr, value in instance.__dict__.items():
-            new_instance_dict[customize_word(attr)] = value
-        instance.__dict__ = new_instance_dict
-        return instance
+        new_class_dict['__setattr__'] = mcs.new_set_attr
+        return super().__new__(mcs, name, bases, new_class_dict, **kwargs)
 
 
 class CustomClass(metaclass=CustomMeta):
@@ -42,20 +40,8 @@ class CustomClass(metaclass=CustomMeta):
         self._val = val2
         self.__val = val3
 
-    def __getattrfromclass__(self, attr):
-        """
-        This method was added to get attributes from class methods.
-        I made a custom magic method so that it doesn't get renamed.
-        """
-        return super().__getattribute__(customize_word(attr))
-
-    def __setattr__(self, key, value):
-        new_key = customize_word(key)
-        return super().__setattr__(new_key, value)
-
     def line(self):
-        return self.__getattrfromclass__('public') * \
-               self.__getattrfromclass__('_protected')
+        return 100
 
     def __str__(self):
         return "Custom_by_metaclass"
