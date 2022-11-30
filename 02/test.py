@@ -98,8 +98,7 @@ class TestParseFunction:
 
     def test_run_without_word_handler(self, data_generator):
         json_dict, fields, keywords = data_generator
-        with pytest.raises(TypeError):
-            parse_json(json_str=json.dumps(json_dict), keywords=keywords, required_fields=fields)
+        assert parse_json(json_str=json.dumps(json_dict), keywords=keywords, required_fields=fields) is None
 
 
 class TestKeywordCallback:
@@ -122,5 +121,6 @@ class TestKeywordCallback:
         expected_word = copy.copy(input_word)
         if expected_flag:
             expected_word = expected_word.capitalize()
-        keyword_callback(input_word)
+        res = keyword_callback(input_word)
         assert input_word == expected_word
+        assert res if expected_flag else res is None

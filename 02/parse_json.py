@@ -17,10 +17,10 @@ def keyword_callback(word):
     :return: If word fits the format returns True
     """
     if re.fullmatch('^[A-Z][a-z]+', word):
-        return
+        return True
 
 
-def parse_json(json_str: str, word_handler, required_fields=None, keywords=None):
+def parse_json(json_str: str, word_handler = None, required_fields=None, keywords=None):
     """
     Parse json_functions for parsing json string. This function takes json string,
     fields for handling, names for searching and name of function for word handling.
@@ -40,6 +40,9 @@ def parse_json(json_str: str, word_handler, required_fields=None, keywords=None)
 
     if keywords is None:
         return []
+
+    if word_handler is None:
+        return
 
     for field in required_fields:
         if field in json_dict:
