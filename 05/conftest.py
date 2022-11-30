@@ -26,5 +26,5 @@ def file():
     with open(file_name, 'w') as my_file:
         my_file.writelines(line_list)
 
-    yield file_name, words_from_every_line, words_from_one_line
+    yield file_name, words_from_every_line, words_from_one_line, numbers_of_lines
     os.remove(file_name)

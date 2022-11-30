@@ -6,3 +6,4 @@ def filter_file(name_of_file, word_list):
             for word in temp_word_list:
                 if word in temp_lst:
                     yield line.replace('\n', '')
+                    break
