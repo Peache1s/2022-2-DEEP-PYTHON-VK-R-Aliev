@@ -55,8 +55,8 @@ b = np.array([[1, 0, 1, 2, 1, 1, 1, 4, 5, 6, 7, 7, 8, 9, 0, 5, 7, 8, 8],
               [1, 0, 1, 1, 1, 2, 1, 4, 5, 6, 7, 7, 8, 9, 0, 5, 7, 8, 8]
               ])
 
-corr_mat_lst = [a, b] * 12
-incorr_mat_lst = [a, b] * 12
+corr_mat_lst = [a, b] * 250000
+incorr_mat_lst = [a, b] * 250000
 
 
 print('===python===')
